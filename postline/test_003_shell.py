@@ -76,12 +76,17 @@ class Shell (Entity):
 
 class MyEntity (Entity):
 
-    def __init__(self, address, to_address):
+    def __init__(self, address, to_address, reset=False):
         super().__init__(address)
         self.to_address = to_address
+        self.reset = reset
 
     def init (self, app):
-        app.send(make_message(self.address, self.to_address, PROMPT))
+        if self.reset:
+            app.send(make_message(self.address, self.to_address, PROMPT))
+        else:
+            user_input = input(">>> ")
+            app.send(make_message(self.address, self.to_address, user_input))
 
     def process (self, message, app):
         if not message is None:
@@ -94,10 +99,11 @@ class MyEntity (Entity):
 def main():
     parser = argparse.ArgumentParser(description='Send a message')
     parser.add_argument('--to', help='Recipient address')
+    parser.add_argument('--init', action='store_true', help='Initialize the conversation')
     args = parser.parse_args()
     app = App()
     app.add_entity(Shell('shell@localdomain'))
-    app.add_entity(MyEntity('user1@localdomain', args.to))
+    app.add_entity(MyEntity('user1@localdomain', args.to, args.init))
     app.run()
 
 if __name__ == "__main__":
