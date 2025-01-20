@@ -1,5 +1,6 @@
 import sys
 import pickle
+from postline import Message, Entry
 def play_journal(self_address, journal):
     output = []
     for entry in journal:
@@ -17,8 +18,11 @@ def play_journal(self_address, journal):
                 entry.message.replace_header("Subject", "%d journal entries compressed" % (end - start))
                 output.append(entry)
                 output.extend(bottom)
-                entry.message.replace_header("Subject", "memory compression done %d-%d" % (start, end))
-                entry.message.replace_content("")
+                entry = Entry(Message())
+                entry.message["From"] = self_address
+                entry.message["To"] = self_address
+                entry.message["Subject"] = "memory compression done %d-%d" % (start, end)
+                entry.message.set_content("")
                 output.append(entry)
         # Potentially other journal instructions can be processed here
         else:
