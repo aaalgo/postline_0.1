@@ -5,6 +5,8 @@ wdong@aaalgo.com
 
 To reproduce:
 
+`pip install pika openai`
+
 1. cd into docker, run `docker compose up`.
 2. Start the server: `cd postline; ./agents_processor`
 3. Start the cnosole: `cd postline; ./console.sh`
