@@ -13,7 +13,7 @@ def main ():
     agent = postline.Agent(args.address, store)
     for entry in agent.journal:
         print()
-        #print('From', entry.message['From'])
+        print('From', entry.message['From'])
         print(entry.message.as_string())
 
 if __name__ == '__main__':
