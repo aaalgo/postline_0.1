@@ -121,7 +121,10 @@ class App:
 
     def run (self):
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host=config.RABBITMQ_HOST)
+            pika.ConnectionParameters(
+                host=config.RABBITMQ_HOST,
+                credentials=pika.PlainCredentials(config.RABBITMQ_USER, config.RABBITMQ_PASSWORD)
+            )
         )
         channel = self.connection.channel()
         self.channel = channel

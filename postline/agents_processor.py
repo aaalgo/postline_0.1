@@ -31,7 +31,10 @@ class Processor:
 
 def main():
     connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host=config.RABBITMQ_HOST)
+        pika.ConnectionParameters(
+            host=config.RABBITMQ_HOST,
+            credentials=pika.PlainCredentials(config.RABBITMQ_USER, config.RABBITMQ_PASSWORD)
+        )
     )
     channel = connection.channel()
     

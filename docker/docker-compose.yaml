@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:11.6.2-ubi9
+    environment:
+      MYSQL_ROOT_PASSWORD: postline
+      MYSQL_DATABASE: postline
+      MYSQL_USER: postline
+      MYSQL_PASSWORD: postline
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
+      - ./init_db.sh:/docker-entrypoint-initdb.d/postline.sh
+      - ./postline-20250120002129.sql:/init.sql
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"  # AMQP port
+      - "15672:15672"  # Management UI port
+    environment:
+      RABBITMQ_DEFAULT_USER: postline
+      RABBITMQ_DEFAULT_PASS: postline
+    volumes:
+      - ./rabbitmq_data:/var/lib/rabbitmq
+
