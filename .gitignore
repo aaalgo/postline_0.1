@@ -170,6 +170,3 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-docker/mariadb_data
-docker/rabbitmq_data
-
