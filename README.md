@@ -3,9 +3,13 @@ Postline 0.1
 Wei Dong
 wdong@aaalgo.com
 
-This is an early version of Postline used in the experiments reported
-in the paper.  The architecture is very different from the one
+This is an early version of Postline used to produce the experimental results
+reported in the Postline paper. The architecture is very different from the one
 presented in the paper.
+
+The full Postline system code is available for licensing to collaborators, with
+trial accounts also offered. Please contact the author for more details.
+
 
 To reproduce:
 
