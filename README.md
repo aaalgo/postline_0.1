@@ -1,7 +1,10 @@
-Postline: The Ann Arbor Agent Operating System
-==============================================
+Postline 0.1
+============
 Wei Dong
 wdong@aaalgo.com
+
+This is an early version of Postline used in the experiments reported
+in the paper.
 
 To reproduce:
 
