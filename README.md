@@ -20,6 +20,7 @@ To reproduce:
 To export trace to mbox: `./export_mbox.py ai_30@agents.localdomain >
 mbox_file`.
 
+Some conversation logs are provided:
 
-Traces:
-- `postline/archive/ai_30_transcript.txt
+- `log/ai_30_transcript.txt`: initial experiments.
+- `log/msr-{before,after}.txt`: MSR experiments.
