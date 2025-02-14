@@ -8,7 +8,8 @@ reported in the Postline paper. The architecture is very different from the one
 presented in the paper.
 
 The full Postline system code is available for licensing to collaborators, with
-trial accounts also offered. Please contact the author for more details.
+trial accounts also offered. Please contact the author if you are
+interested.
 
 
 To reproduce:
