@@ -4,8 +4,11 @@ Wei Dong
 wdong@aaalgo.com
 
 This is an early version of Postline used to produce the experimental results
-reported in the Postline paper. The architecture is very different from the one
-presented in the paper.
+reported in the Postline paper.
+
+[Postline Paper Repository](https://github.com/aaalgo/postline_paper)
+
+The architecture is very different from the one presented in the paper.
 
 The full Postline system code is available for licensing to collaborators, with
 trial accounts also offered. Please contact the author if you are
