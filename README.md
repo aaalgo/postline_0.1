@@ -4,7 +4,8 @@ Wei Dong
 wdong@aaalgo.com
 
 This is an early version of Postline used in the experiments reported
-in the paper.
+in the paper.  The architecture is very different from the one
+presented in the paper.
 
 To reproduce:
 
@@ -19,3 +20,6 @@ To reproduce:
 To export trace to mbox: `./export_mbox.py ai_30@agents.localdomain >
 mbox_file`.
 
+
+Traces:
+- `postline/archive/ai_30_transcript.txt
