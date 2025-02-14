@@ -1,8 +1,10 @@
 import json
+import pickle
 from openai import OpenAI
 from postline import Agent, Message, parse_message
 from journal import play_journal
 
+serial = 0
 
 FIELDS_TO_COPY = ['From', 'To', 'Subject', 'Content-Type']
 
@@ -22,10 +24,29 @@ Content-Type: text/plain
 Yes, I'm ready to process messages.
 """
 
+HEADERS = ['From', 'To', 'Subject', 'X-Serial', 'X-Total-Tokens']
+
+def format_message_as_string (message: Message):
+    if message.is_multipart():
+        return message.as_string()
+    lines = []
+    if not 'Subject' in message:
+        message['Subject'] = ''
+    for header in HEADERS:
+        if header in message:
+            lines.append(f"{header}: {message[header]}")
+    lines.append("")
+    content = message.get_content()
+    if isinstance(content, bytes):
+        content = content.decode('utf-8')
+    lines.append(content)
+    return "\n".join(lines)
+
 class GptAgent (Agent):
 
     def __init__ (self, address, storage=None):
         super().__init__(address, storage)
+        self.serial = 0
 
     def format_gpt_message (self, message: Message, serial_number):
         out = {}
@@ -34,7 +55,7 @@ class GptAgent (Agent):
         else:
             out['role'] = 'user'
         message["X-Serial"] = str(serial_number)
-        out['content'] = message.as_string() 
+        out['content'] = format_message_as_string(message)
         del message['X-Serial']
         return out
 
@@ -75,6 +96,10 @@ class GptAgent (Agent):
                 messages = messages,
                 stream = False
             )
+            global serial
+            with open('trace/%d.pkl' % serial, 'wb') as f:
+                pickle.dump((messages, response), f)
+            serial += 1
             # Get usage statistics from the response
             prompt_tokens = response.usage.prompt_tokens
             completion_tokens = response.usage.completion_tokens
@@ -83,6 +108,8 @@ class GptAgent (Agent):
             print(f"Completion tokens: {completion_tokens}") 
             print(f"Total tokens: {total_tokens}")
             resp = parse_message(response.choices[0].message.content)
+            if 'X-Total-Tokens' in resp:
+                del resp['X-Total-Tokens']
             resp['X-Total-Tokens'] = str(total_tokens)
         self.append(resp)
         print('-' * 20, 'generation')

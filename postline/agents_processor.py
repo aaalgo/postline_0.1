@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import pika
-from postline import parse_message
+from postline import parse_message, Message
 from ai_openai import GptAgent
 from sql_storage import SqlStorage, create_engine
 import config
@@ -13,6 +13,17 @@ class Processor:
     def send (self, message):
         out_body = message.as_string()
         to_addresses = [addr.strip() for addr in message['To'].split(',')]
+        # handle of MSR
+        if 'system@localdomain' in to_addresses:
+            assert len(to_addresses) == 1
+            resp = Message()
+            resp["From"] = message["To"]
+            resp["To"] = message["From"]
+            resp["Subject"] = "Re: " + message["Subject"]
+            resp.set_content("Memory segment rewriting applied.")
+            routing_key = message["From"].replace('@', '.')
+            self.ch.basic_publish(exchange=config.RABBITMQ_EXCHANGE, routing_key=routing_key, body=resp.as_string())
+            return
         for to_address in to_addresses:
             routing_key = to_address.replace('@', '.')
             print(f"Sending message to {routing_key}")
